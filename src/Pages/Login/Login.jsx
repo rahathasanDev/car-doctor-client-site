@@ -1,10 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { AuthContext } from '../../Providers/AuthProvider';
 
 const Login = () => {
      const {signIn}=useContext(AuthContext);
+     const [isAuthenticated, setAuthenticated] = useState(false);
 
   const handleLogin = event => {
     event.preventDefault();
@@ -17,9 +18,14 @@ const Login = () => {
       const user = result.user;
       console.log(user);
       form.reset();
+      setAuthenticated(true);
+      
     })
     .catch(error=>console.log(error));
-
+  }
+  if (isAuthenticated) {
+    // Redirect to the home page if authenticated
+    return <Navigate to="/" />;
   }
 
   return (
